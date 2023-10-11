@@ -1,67 +1,89 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { generateAccount } from '../utils/accountUtils';
 import AccountDetails from './AccountDetails';
 import Transaction from './Transaction'
+import { sepolia } from '../chains/sepolia';
+import {ethers} from 'ethers';
+
 const SeedAccount = () => {
-  // const [accountDetails, setAccountDetails] = useState<Account>();
 
   const [toggleInput, setToggleInput] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState('');
-  const [account, setAccount] = useState({}); 
-  const [toggleBal, setToggleBal] = useState(false); 
+  const [account, setAccount] = useState({
+    publicKey: JSON.parse(localStorage.getItem("account"))?.publicKey ,
+    privateKey: JSON.parse(localStorage.getItem("account"))?.privateKey ,
+    balance: JSON.parse(localStorage.getItem("account"))?.balance 
+  });
+  const [toggleBal, setToggleBal] = useState(false);
 
- 
+  useEffect(() => {
+    if (account.publicKey) {
+      setToggleBal(true);
+    }
+  }, [])
 
   const createAccount = (e) => {
     e.preventDefault();
-    const accountInfo = generateAccount(); 
+    const accountInfo = generateAccount();
 
-    setAccount({
-      publicKey : accountInfo.address, 
-      privateKey : accountInfo.signingKey.privateKey, 
-      balance : 0
-    });
+    let acc = {
+      publicKey: accountInfo.address,
+      privateKey: accountInfo.signingKey.privateKey,
+      balance: 0,
+    }
+    setAccount(acc);
+
+    localStorage.setItem("account", JSON.stringify(acc));
 
     setToggleBal(true)
-
   };
 
-  const handleGetAccountWithSeedPhrase = (e) => {
+  const handleGetAccountWithSeedPhrase = async (e) => {
     e.preventDefault();
-    try{
-        if (!seedPhrase) return;
-        const accountInfo = generateAccount(seedPhrase); 
-        setAccount({
-          publicKey : accountInfo.address, 
-          privateKey : accountInfo.signingKey.privateKey, 
-        });
-        // setAccountDetails(generateAccount(seedPhrase));
-        setToggleBal(true)
+    try {
+      if (!seedPhrase) return;
+
+      const accountInfo = generateAccount(seedPhrase);
+      // console.log("seed ph ", accountInfo.address)
+      const provider = new ethers.JsonRpcProvider(sepolia.rpcUrl);
+      let accountBalance = await provider.getBalance("0x8dA5B5B68686c133E0646d024ba7ED681bD18095");
+
+      setAccount({
+        publicKey: accountInfo.address,
+        privateKey: accountInfo.signingKey.privateKey,
+        balance: accountBalance
+      });
+
+      setToggleBal(true);
     }
-    catch(err){
-        alert("invalid private key or mnemonic phrase")
+    catch (err) {
+      console.log(err)
+      alert("invalid private key or mnemonic phrase")
     }
   };
 
   const toggleShowBalance = (e) => {
-    e.preventDefault(); 
-    setToggleBal(!toggleBal); 
+    e.preventDefault();
+    setToggleBal(!toggleBal);
   }
 
-//   console.log(account);
-
+  const logout = (e) => {
+    e.preventDefault(); 
+    localStorage.clear(); 
+    window.location.reload();
+  }
   return (
     <div className="seed-account-card">
       <div className="buttons">
-        <button className="create-button" onClick={createAccount}>
+        {!account?.publicKey && <button className="create-button" onClick={createAccount}>
           Create Account
-        </button>
-        <button
+        </button>}
+        {!account?.publicKey && <button
           className="recover-button"
           onClick={() => setToggleInput(!toggleInput)}
         >
           Recover Wallet
-        </button>
+        </button>}
       </div>
       {toggleInput && (
         <form className="input-form" onSubmit={handleGetAccountWithSeedPhrase}>
@@ -74,16 +96,20 @@ const SeedAccount = () => {
           <button type="submit">Login</button>
         </form>
       )}
-      
-      {account.publicKey && 
-      <>
-        <hr style={{marginTop : "10px", marginBottom : "10px"}}/>
-        <button onClick={toggleShowBalance}>Show Balance</button>
-      </>
+
+      {account.publicKey &&
+        <>
+          <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
+          <button onClick={toggleShowBalance}>Show Balance</button>
+        </>
       }
-      {toggleBal && <AccountDetails account={account}/>}
-      <hr style={{marginTop : "10px"}} />
-      {account.publicKey && <Transaction account={account}/>}
+      {toggleBal && <AccountDetails account={account} />}
+      <hr style={{ marginTop: "10px" }} />
+      {account.publicKey && <Transaction account={account} />}
+
+      <hr style={{margin : "20px 0"}}/>
+
+      {account.publicKey && <button className='create-button' style={{backgroundColor : "red"}} onClick={logout}>Logout</button>}
     </div>
   );
 };

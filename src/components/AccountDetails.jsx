@@ -10,9 +10,6 @@ const AccountDetails = ({account}) => {
     
     useEffect(() => {
         const fetchData = async () => {
-            // console.log(new ethers.JsonRpcProvider(sepolia.rpcUrl))
-            console.log(new ethers.JsonRpcProvider(sepolia.rpcUrl))
-            console.log(account)
             const provider = new ethers.JsonRpcProvider(sepolia.rpcUrl);
             let accountBalance = await provider.getBalance(account.publicKey);
             setBalance(ethers.formatEther(accountBalance))
@@ -20,7 +17,6 @@ const AccountDetails = ({account}) => {
         fetchData(); 
  
     }, [])
-    console.log(balance);
     return (
         <>
         <div style={{overflow : "hidden"}}>
