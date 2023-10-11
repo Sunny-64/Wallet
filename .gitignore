@@ -1,0 +1,31 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+private key primary account : d2dee1fc156bd7908815da7c092b1b43120c68c72c80f6fe5e50ce2ed7d879d2
+
+
+private key : 8fa553da778fb01cf40300b452ed7481de9e170fde9efd0622f8447605e9e1db
+
+publicKey : 0x739562875045c6abA4FE73B3D633518606473ec8
