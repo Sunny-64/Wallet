@@ -3,16 +3,16 @@ import { generateAccount } from '../utils/accountUtils';
 import AccountDetails from './AccountDetails';
 import Transaction from './Transaction'
 import { sepolia } from '../chains/sepolia';
-import {ethers} from 'ethers';
+import { ethers } from 'ethers';
 
 const SeedAccount = () => {
 
   const [toggleInput, setToggleInput] = useState(false);
   const [seedPhrase, setSeedPhrase] = useState('');
   const [account, setAccount] = useState({
-    publicKey: JSON.parse(localStorage.getItem("account"))?.publicKey ,
-    privateKey: JSON.parse(localStorage.getItem("account"))?.privateKey ,
-    balance: JSON.parse(localStorage.getItem("account"))?.balance 
+    publicKey: JSON.parse(localStorage.getItem("account"))?.publicKey,
+    privateKey: JSON.parse(localStorage.getItem("account"))?.privateKey,
+    balance: JSON.parse(localStorage.getItem("account"))?.balance
   });
   const [toggleBal, setToggleBal] = useState(false);
 
@@ -48,13 +48,16 @@ const SeedAccount = () => {
       const provider = new ethers.JsonRpcProvider(sepolia.rpcUrl);
       let accountBalance = await provider.getBalance("0x8dA5B5B68686c133E0646d024ba7ED681bD18095");
 
-      setAccount({
+      let acc = {
         publicKey: accountInfo.address,
         privateKey: accountInfo.signingKey.privateKey,
-        balance: accountBalance
-      });
+        balance: Number(accountBalance),
+      }
+      setAccount(acc);
 
       setToggleBal(true);
+
+      localStorage.setItem("account", JSON.stringify(acc));
     }
     catch (err) {
       console.log(err)
@@ -68,22 +71,26 @@ const SeedAccount = () => {
   }
 
   const logout = (e) => {
-    e.preventDefault(); 
-    localStorage.clear(); 
+    e.preventDefault();
+    localStorage.clear();
     window.location.reload();
   }
   return (
     <div className="seed-account-card">
       <div className="buttons">
-        {!account?.publicKey && <button className="create-button" onClick={createAccount}>
-          Create Account
-        </button>}
-        {!account?.publicKey && <button
-          className="recover-button"
-          onClick={() => setToggleInput(!toggleInput)}
-        >
-          Recover Wallet
-        </button>}
+        {!account?.publicKey &&
+          <>
+            <button className="create-button" onClick={createAccount}>
+              Create Account
+            </button>
+
+            <button
+              className="recover-button"
+              onClick={() => setToggleInput(!toggleInput)}
+            >
+              Recover Wallet
+            </button>
+          </>}
       </div>
       {toggleInput && (
         <form className="input-form" onSubmit={handleGetAccountWithSeedPhrase}>
@@ -107,9 +114,9 @@ const SeedAccount = () => {
       <hr style={{ marginTop: "10px" }} />
       {account.publicKey && <Transaction account={account} />}
 
-      <hr style={{margin : "20px 0"}}/>
+      <hr style={{ margin: "20px 0" }} />
 
-      {account.publicKey && <button className='create-button' style={{backgroundColor : "red"}} onClick={logout}>Logout</button>}
+      {account.publicKey && <button className='create-button' style={{ backgroundColor: "red" }} onClick={logout}>Logout</button>}
     </div>
   );
 };
