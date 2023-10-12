@@ -29,7 +29,7 @@ const Transaction = ({ account }) => {
             setDisableButtonOnSendEth(true);
             const tx = await signer.sendTransaction({
                 to: receiverAddress,
-                value: ethers.parseEther("0.001")
+                value: ethers.parseEther(amount)
             });
 
             // Often you may wish to wait until the transaction is mined
