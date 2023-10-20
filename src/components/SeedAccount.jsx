@@ -93,20 +93,22 @@ const SeedAccount = () => {
           </>}
       </div>
       {toggleInput && (
-        <form className="input-form" onSubmit={handleGetAccountWithSeedPhrase}>
-          <input
-            type="text"
-            placeholder="Enter Mnemonic phrase"
-            value={seedPhrase}
-            onChange={(e) => setSeedPhrase(e.target.value)}
-          />
-          <button type="submit">Login</button>
-        </form>
+        <>
+          <form className="input-form" onSubmit={handleGetAccountWithSeedPhrase}>
+            <input
+              type="text"
+              placeholder="Enter Mnemonic phrase"
+              value={seedPhrase}
+              onChange={(e) => setSeedPhrase(e.target.value)}
+            />
+            <button type="submit">Login</button>
+          </form>
+          <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
+        </>
       )}
 
       {account.publicKey &&
         <>
-          <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
           <button className='create-button' onClick={toggleShowBalance}>Show Balance</button>
         </>
       }
