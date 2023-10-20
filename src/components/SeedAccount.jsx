@@ -107,7 +107,7 @@ const SeedAccount = () => {
       {account.publicKey &&
         <>
           <hr style={{ marginTop: "10px", marginBottom: "10px" }} />
-          <button onClick={toggleShowBalance}>Show Balance</button>
+          <button className='create-button' onClick={toggleShowBalance}>Show Balance</button>
         </>
       }
       {toggleBal && <AccountDetails account={account} />}
@@ -116,7 +116,7 @@ const SeedAccount = () => {
 
       <hr style={{ margin: "20px 0" }} />
 
-      {account.publicKey && <button className='create-button' style={{ backgroundColor: "red" }} onClick={logout}>Logout</button>}
+      {account.publicKey && <button className='create-button bg-[#4f46e5]'  onClick={logout}>Logout</button>}
     </div>
   );
 };

@@ -20,9 +20,9 @@ const AccountDetails = ({account}) => {
     return (
         <>
         <div style={{overflow : "hidden"}}>
-            <h2 className="address" style={{marginBottom : "10px"}}><a href={`https://sepolia.etherscan.io/address/${account?.publicKey}`} target='_blank'>{account?.publicKey}</a></h2>
+            <h2 className="address" style={{marginBottom : "10px"}}><a className="text-white txt-4xl font-semibold" href={`https://sepolia.etherscan.io/address/${account?.publicKey}`} target='_blank'>{account?.publicKey}</a></h2>
             {/* <strong>Balance : {parseFloat(balance).toFixed(2).replace(/0+$/, '')}</strong>  */}
-            <strong>BALANCE : {(Math.floor(parseFloat(balance) * 1000) / 1000).toFixed(3)} ETH</strong>
+            <strong className="font-bold text-2xl text-[#a5f3fc]">BALANCE : {(Math.floor(parseFloat(balance) * 1000) / 1000).toFixed(3)} ETH</strong>
         </div>
         </>
     )

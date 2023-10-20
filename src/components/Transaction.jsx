@@ -64,8 +64,8 @@ const Transaction = ({ account }) => {
 
     return (
         <>
-            <div>
-                <p>Send ETH :</p>
+            <div className='mt-3'>
+                <p className='font-semibold text-lg text-white'>Send ETH</p>
                 <form className="input-form" onSubmit={sendEth}>
                     <input
                         type="text"
@@ -82,8 +82,12 @@ const Transaction = ({ account }) => {
                     <button type="submit" style={{ opacity: disableButtonOnSendEth ? "0.6" : "0.9" }} disabled={disableButtonOnSendEth}>{disableButtonOnSendEth ? "processing..." : "Send"}</button>
                 </form>
             </div>
-            <hr style={{ margin: "20px 0" }} />
-            <button onClick={toggleShowReceipt}>Show Receipts..</button>
+            
+            {showReceipt && <>
+                <hr style={{ margin: "20px 0" }} />
+                <button className='create-button' onClick={toggleShowReceipt}>Show Receipts..</button>
+            </>
+                }
             {
                 showReceipt && <>
                     {JSON.parse(localStorage.getItem("receipts"))?.map((item, index) => 

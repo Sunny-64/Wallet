@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 *{
   margin:0; 
   padding : 0; 
@@ -5,6 +9,10 @@
 }
 
 /* SeedAccount.css */
+
+body{
+  background-color: #164e63;
+}
 
 /* Container for vertical centering */
 .seed-account-container {
@@ -15,15 +23,16 @@
 }
 
 .seed-account-card {
-  margin : 14% auto;
+  margin : 2% auto;
   background-color: #f0f0f0;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   border-radius: 5px;
   padding: 20px;
   text-align: center;
   box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
   max-width: 400px; /* Increased card width */
   font-family: Arial, sans-serif;
+  background-color : #083344;
 }
 
 .buttons {
@@ -32,7 +41,7 @@
 
 .create-button,
 .recover-button {
-  background-color: #4caf50;
+  background-color: #0891b2;
   color: white;
   border: none;
   padding: 10px 20px;
